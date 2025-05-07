@@ -61,18 +61,22 @@ I2C interface means easy connectivity to modern micrcontrollers and single board
 ```
 | Key            | Pinky | Ring | Middle | Index | Thumb |
 |----------------|-------|------|--------|-------|-------|
-| period         |       |      | x      |       | xoo   |
-| comma          |       |      | x      | x     | xoo   |
+| space          |       |      |        | x     | xoo   |
+| tab            |       |      | x      |       | xoo   |
+| period         |       | x    |        |       | xoo   |
+| minus          | x     |      |        |       | xoo   |
+| comma          |       | x    |        | x     | xoo   |
+| enter          |       |      | x      | x     | xoo   |
+| backspace      |       | x    | x      |       | xoo   |
+| backslash      | x     | x    |        | x     | xoo   |
 | forward_slash  | x     | x    |        |       | xoo   |
 | grave_accent   | x     | x    | x      | x     | xoo   |
 | minus          | x     |      |        |       | xoo   |
-| equals         |       |      | x      | x     | xoo   |
+| equals         |       | x    |        | x     | xoo   |
 | left_bracket   | x     |      | x      |       | xoo   |
 | right_bracket  | x     |      |        | x     | xoo   |
-| backslash      | x     | x    |        |       | xoo   |
-| semicolon      | x     | x    | x      |       | xoo   |
+| semicolon      | x     | x    |        | x     | xoo   |
 | quote          | x     |      | x      | x     | xoo   |
-| backspace      |       | x    | x      |       | xoo   |
 ```
 
 ```
