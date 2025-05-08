@@ -12,6 +12,7 @@ I2C interface means easy connectivity to modern micrcontrollers and single board
 ![Screenshot](pics/c7k-pcb-case-stencil.jpeg)
 
 
+center thumb or no modifier :: alpha
 ```
 | Key | Pinky | Ring | Middle | Index | Thumb |
 |-----|-------|------|--------|-------|-------|
@@ -41,7 +42,13 @@ I2C interface means easy connectivity to modern micrcontrollers and single board
 | x   | x     |      |        | x     | oxo   |
 | y   |       |      | x      | x     | oxo   |
 | z   | x     | x    | x      |       | oxo   |
+| BCK | x     |      | x      | x     |       |
+| SPC | x     | x    |        | x     |       |
+| DEL | x     |      | x      | x     | oxo   |
 ```
+  
+
+outside thumb modifier :: numeric
 
 ```
 | Key   | Pinky | Ring | Middle | Index | Thumb |
@@ -56,7 +63,14 @@ I2C interface means easy connectivity to modern micrcontrollers and single board
 | EIGHT |       | x    |        | x     | oox   |
 | NINE  | x     |      | x      |       | oox   |
 | ZERO  |       | x    | x      | x     | oox   |
+| ->    | x     |      | x      | x     | oox   |
+| <-    | x     | x    |        | x     | oox   |
+| ^^    | x     |      |        | x     | oox   |
+| vv    | x     | x    | x      | x     | oox   |
+| ESC   | x     | x    | x      |       | oox   |
 ```
+
+inside thumb :: white 
 
 ```
 | Key            | Pinky | Ring | Middle | Index | Thumb |
@@ -79,15 +93,19 @@ I2C interface means easy connectivity to modern micrcontrollers and single board
 | quote          | x     |      | x      | x     | xoo   |
 ```
 
+inside and center thumb :: modifier layer
+
 ```
 | Modifier        | Pinky | Ring | Middle | Index | Thumb |
 |-----------------|-------|------|--------|-------|-------|
 | Toggle Modifier |       |      |        |       | xxo   |
-| Shift           | x     |      |        |       |       |
-| Control         |       | x    |        |       |       |
-| Alt             |       |      | x      |       |       |
-| GUI             |       |      |        | x     |       |
+| Shift           |       |      |        | x     |       |
+| Control         |       |      | x      |       |       |
+| Alt             |       | x    |        |       |       |
+| GUI             | x     |      |        |       |       |
 ```
+
+inside and outer thumb :: mouse layer
 
 ```
 | Action       | Pinky | Ring | Middle | Index | Thumb |

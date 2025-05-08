@@ -64,8 +64,23 @@ for digit, name in zip('0123456789', nums):
     KEYCODE_CHAR[getattr(Keycode, name)] = digit
 KEYCODE_CHAR[Keycode.SPACE] = ' '
 KEYCODE_CHAR[Keycode.ENTER] = '\n'
+
 def key_to_char(kc):
     return KEYCODE_CHAR.get(kc, '?')
+
+# —— Shift + Number → Symbol Map ——
+SHIFT_NUM_SYMBOLS = {
+    Keycode.ONE:   '!',
+    Keycode.TWO:   '@',
+    Keycode.THREE: '#',
+    Keycode.FOUR:  '$',
+    Keycode.FIVE:  '%',
+    Keycode.SIX:   '^',
+    Keycode.SEVEN: '&',
+    Keycode.EIGHT: '*',
+    Keycode.NINE:  '(',
+    Keycode.ZERO:  ')'
+}
 
 # —— MCP23008 Expander Setup ——
 mcp = MCP23008(i2c)
@@ -119,13 +134,16 @@ chords = {
     (0,1,2): Keycode.D,(1,2,3): Keycode.P,
     (0,1,2,5): Keycode.J,(1,2,3,5): Keycode.Z,
     (0,1,2,3): Keycode.U,(0,1,2,3,5): Keycode.Q,
+    (0,1,3,5): Keycode.DELETE,
     (0,4): Keycode.ONE,(1,4): Keycode.TWO,  (2,4): Keycode.THREE,
     (3,4): Keycode.FOUR,(0,1,4): Keycode.FIVE,(1,2,4): Keycode.SIX,
     (2,3,4): Keycode.SEVEN,(0,2,4): Keycode.EIGHT,(1,3,4): Keycode.NINE,
+    (0,1,3): Keycode.BACKSPACE,
+    (0,2,3): Keycode.SPACE,
     (0,3,4): Keycode.UP_ARROW,
     (0,1,2,4): Keycode.ZERO,
-    (0,1,3,4): Keycode.LEFT_ARROW,
-    (0,2,3,4): Keycode.RIGHT_ARROW,
+    (0,1,3,4): Keycode.RIGHT_ARROW,
+    (0,2,3,4): Keycode.LEFT_ARROW,
     (1,2,3,4): Keycode.ESCAPE,
     (0,1,2,3,4): Keycode.DOWN_ARROW,
     (6,): Keycode.BACKSPACE,
@@ -182,7 +200,7 @@ def check_chords():
                     update_display('?')  # placeholder or show move indicator
                     time.sleep(COOLDOWN)
                     return
-                        # Pick modifier
+            # Pick modifier
             if modifier_armed and held_modifier is None and combo in modifier_chords:
                 held_modifier = modifier_chords[combo]
                 pending_combo = combo
@@ -198,14 +216,19 @@ def check_chords():
                 return
 
             # Modifier + key
-
             if modifier_armed and held_modifier and combo in chords:
                 key = chords[combo]
-                keyboard.press(held_modifier, key); keyboard.release_all()
-                ch = key_to_char(key)
+                keyboard.press(held_modifier, key)
+                keyboard.release_all()
+                # if shift+number, show the shifted symbol
+                if held_modifier == Keycode.LEFT_SHIFT and key in SHIFT_NUM_SYMBOLS:
+                    ch = SHIFT_NUM_SYMBOLS[key]
+                else:
+                    ch = key_to_char(key)
                 modifier_armed = False; held_modifier = None
                 pending_combo = combo; last_combo_time = now
                 update_display(ch); time.sleep(COOLDOWN); return
+
             # Normal chord
             if not modifier_armed and not mouse_armed and combo in chords:
                 if pending_combo is None or (now - last_combo_time) <= COMBO_WINDOW:
@@ -223,4 +246,5 @@ def check_chords():
 while ble.connected:
     for pin, idx in pin_to_key_index.items():
         pressed_keys[idx] = not mcp.get_pin(pin).value
-    check_chords(); time.sleep(0.05)
+    check_chords()
+    time.sleep(0.05)
