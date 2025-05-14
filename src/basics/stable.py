@@ -40,6 +40,7 @@ bus = I2CDisplayBus(i2c, device_address=0x3C)
 display = adafruit_displayio_ssd1306.SSD1306(bus, width=128, height=64)
 splash = displayio.Group()
 display.root_group = splash
+# Large font scale=4, y=32 center
 txt = label.Label(terminalio.FONT, text="", x=0, y=32, scale=4)
 splash.append(txt)
 
@@ -79,15 +80,6 @@ SHIFT_NUM_SYMBOLS = {
     Keycode.EIGHT: '*',
     Keycode.NINE:  '(',
     Keycode.ZERO:  ')'
-}
-
-# —— Mouse Button Chords ——
-mouse_button_chords = {
-    (0, 1): Mouse.LEFT_BUTTON,     # Pinky + Ring → left-click
-    (2, 3): Mouse.RIGHT_BUTTON,    # Middle + Index → right-click
-    (1, 2): Mouse.MIDDLE_BUTTON,   # Ring + Middle → middle-click
-    (0, 4): Mouse.BACK_BUTTON,     # Pinky + Thumb → “back” button
-    (3, 4): Mouse.FORWARD_BUTTON   # Index + Thumb → “forward” button
 }
 
 # —— MCP23008 Expander Setup ——
@@ -205,20 +197,15 @@ def check_chords():
                 if dx or dy:
                     mouse.move(dx, dy)
                     pending_combo = combo; last_combo_time = now
-                    update_display('?')
+                    update_display('?')  # placeholder or show move indicator
                     time.sleep(COOLDOWN)
                     return
-            # Mouse button clicks
-            if mouse_armed and combo in mouse_button_chords:
-                mouse.click(mouse_button_chords[combo])
-                pending_combo = combo; last_combo_time = now
-                update_display('?')
-                time.sleep(COOLDOWN)
-                return
             # Pick modifier
             if modifier_armed and held_modifier is None and combo in modifier_chords:
                 held_modifier = modifier_chords[combo]
-                pending_combo = combo; last_combo_time = now
+                pending_combo = combo
+                last_combo_time = now
+                # Display modifier initial: S=Shift, C=Ctrl, A=Alt, G=GUI
                 mod_char = {
                     Keycode.LEFT_SHIFT: 'S',
                     Keycode.LEFT_CONTROL: 'C',
@@ -227,11 +214,13 @@ def check_chords():
                 }.get(held_modifier, '?')
                 update_display(mod_char)
                 return
+
             # Modifier + key
             if modifier_armed and held_modifier and combo in chords:
                 key = chords[combo]
                 keyboard.press(held_modifier, key)
                 keyboard.release_all()
+                # if shift+number, show the shifted symbol
                 if held_modifier == Keycode.LEFT_SHIFT and key in SHIFT_NUM_SYMBOLS:
                     ch = SHIFT_NUM_SYMBOLS[key]
                 else:
@@ -239,6 +228,7 @@ def check_chords():
                 modifier_armed = False; held_modifier = None
                 pending_combo = combo; last_combo_time = now
                 update_display(ch); time.sleep(COOLDOWN); return
+
             # Normal chord
             if not modifier_armed and not mouse_armed and combo in chords:
                 if pending_combo is None or (now - last_combo_time) <= COMBO_WINDOW:

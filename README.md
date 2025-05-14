@@ -96,13 +96,18 @@ inside thumb :: white
 inside and center thumb :: modifier layer
 
 ```
-| Modifier        | Pinky | Ring | Middle | Index | Thumb |
-|-----------------|-------|------|--------|-------|-------|
-| Toggle Modifier |       |      |        |       | xxo   |
-| Shift           |       |      |        | x     |       |
-| Control         |       |      | x      |       |       |
-| Alt             |       | x    |        |       |       |
-| GUI             | x     |      |        |       |       |
+| Action          | Pinky | Ring | Middle | Index | Thumb |
+|-----------------|:-----:|:----:|:------:|:-----:|:-----:|
+| Toggle Mouse    |       |      |        |       | oxx   |
+| Move Up         |   X   |      |        |       |       |
+| Move Right      |       |   X  |        |       |       |
+| Move Left       |       |      |   X    |       |       |
+| Move Down       |       |      |        |   X   |       |
+| Left Click      |   X   |   X  |        |       |       |
+| Right Click     |       |      |   X    |   X   |       |
+| Middle Click    |       |   X  |   X    |       |       |
+| Back (X1)       |   X   |      |        |       |   X   |
+| Forward (X2)    |       |      |        |   X   |   X   |
 ```
 
 inside and outer thumb :: mouse layer
